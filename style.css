@@ -1,0 +1,265 @@
+/* ---------- base & hero (keep your existing hero styles if you want) ---------- */
+:root{
+  --bg:#0f0f1a;
+  --muted: rgba(255,255,255,0.7);
+  --glass: rgba(255,255,255,0.06);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);
+  color:#fff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+}
+
+/* Hero */
+.hero{
+  position:relative;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  overflow:hidden;
+}
+.overlay{
+    
+  position:absolute;
+  inset:0;
+  background:linear-gradient(45deg, #a855f7, #6366f1, #06b6d4, #f472b6);
+  background-size:400% 400%;
+  animation:gradientShift 12s ease infinite;
+  z-index:0;
+  /* change these two lines inside .overlay */
+filter: blur(20px) saturate(110%);
+opacity: 0.65;
+}
+/* 3D canvas: full-screen behind content */
+#bg3d{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;            /* behind overlay (-1) and page content (0+) */
+  pointer-events: none;   /* allow clicks through to page */
+  display: block;
+  background: transparent;
+}
+
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.hero-content{position:relative;z-index:2;padding:40px}
+.hero-content h1{font-size:clamp(32px,6vw,64px);margin:0}
+.highlight{color:#fbbf24}
+.tagline{margin-top:10px;font-size:clamp(14px,2.6vw,20px);opacity:0.95}
+.hero-cta{margin-top:18px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{
+  display:inline-block;padding:10px 18px;border-radius:10px;background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.12);color:white;text-decoration:none;font-weight:600;
+  transition:all .25s ease;
+}
+.btn:hover{transform:translateY(-3px);background:rgba(255,255,255,0.95);color:#000}
+
+/* Sections */
+.section{padding:60px 20px}
+.container{max-width:1000px;margin:0 auto}
+
+/* Headings */
+h2{font-size:28px;margin:0 0 10px 0}
+.muted{color:var(--muted);margin-bottom:18px}
+
+/* Skills */
+.skills{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+.skill{background:var(--glass);padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.04)}
+
+/* Projects grid */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:20px}
+.project-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.06);
+  padding:18px;border-radius:12px;backdrop-filter:blur(6px);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.project-card:hover{transform:translateY(-8px);box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+.project-card .thumb{
+  height:140px;border-radius:8px;background:linear-gradient(135deg,#111,#222);display:flex;align-items:center;justify-content:center;font-size:42px;color:rgba(255,255,255,0.08);margin-bottom:12px
+}
+.project-card.placeholder .thumb{background:linear-gradient(135deg,#111,#1a1a2b);color:rgba(255,255,255,0.06)}
+
+/* Certificates */
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-top:18px}
+.cert-card{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);text-align:center;cursor:pointer;transition:transform .18s ease;overflow:hidden}
+.cert-card img{width:100%;height:120px;object-fit:cover;border-radius:6px;display:block}
+.cert-card p{margin:8px 0 0 0;font-size:14px}
+.cert-card:hover{transform:translateY(-6px)}
+
+/* Modal */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:999;padding:20px}
+/* Modal container — allow internal scrolling for very tall images */
+.modal-inner{
+  max-width:1100px;
+  width:100%;
+  background:#0b0b10;
+  padding:12px;
+  border-radius:10px;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,0.7);
+
+  /* IMPORTANT for tall images: limit modal height and allow scrolling */
+  max-height: calc(100vh - 80px);
+  overflow: auto;
+
+  /* center content nicely */
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+
+/* Make the image scale to fit *height* first for tall scans, but keep width responsive */
+.modal img{
+  max-width: calc(100% - 24px);      /* leave a little padding inside modal */
+  max-height: calc(100vh - 180px);   /* ensure it fits within the viewport */
+  width: auto;
+  height: auto;
+  object-fit: contain;               /* preserve aspect ratio, don't crop */
+  display:block;
+  border-radius:6px;
+}
+
+.modal-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:white;font-size:28px;cursor:pointer}
+
+/* Socials */
+.socials{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+.social-btn{
+  display:inline-block;padding:8px 14px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+  text-decoration:none;color:white;font-weight:600;cursor:pointer;
+}
+.social-btn.disabled{opacity:0.6;pointer-events:none;filter:grayscale(40%)}
+
+/* Footer */
+.footer{padding:20px;text-align:center;color:var(--muted);border-top:1px solid rgba(255,255,255,0.03);margin-top:40px}
+
+/* Responsive tweaks */
+@media (max-width:600px){
+  .hero-content h1{font-size:28px}
+  .project-card .thumb{height:110px}
+  .cert-card img{height:100px}
+}
+@media (max-width:700px){
+  #bg3d{ display:none; }
+}
+#cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+
+.cursor-circle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple 0.6s ease-out forwards;
+}
+
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+
+/* Hamburger button */
+#hamburger {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 30px;
+  height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 10001; /* above everything */
+}
+
+#hamburger .bar {
+  width: 100%;
+  height: 4px;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* Side menu */
+#side-menu {
+  position: fixed;
+  top: 0;
+  left: -250px; /* hidden initially */
+  width: 250px;
+  height: 100%;
+  background: #111;
+  color: #fff;
+  padding: 60px 20px;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.5);
+  transition: 0.4s;
+  z-index: 10000;
+}
+
+#side-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#side-menu ul li {
+  margin: 30px 0;
+}
+
+#side-menu ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+  transition: 0.2s;
+}
+
+#side-menu ul li a:hover {
+  color: #a855f7; /* purple highlight */
+}
+
+/* Side menu open state */
+#side-menu.open {
+  left: 0;
+}
+
+/* Hamburger animation when open */
+#hamburger.open .bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+#hamburger.open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+#hamburger.open .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+
